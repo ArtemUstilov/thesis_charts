@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
     user,
     password
   });
+  res.set('Access-Control-Allow-Origin', '*');
   db.any("SELECT * FROM $1:name WHERE l = $2 AND n = $3 AND sel_type = $4 AND run_id = $5 ORDER BY iteration ASC LIMIT $6 OFFSET $7",
     [table, l, n, sel_type, run_id, limit, offset])
     .then(function (data) {
