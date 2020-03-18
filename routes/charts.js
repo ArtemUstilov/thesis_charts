@@ -29,4 +29,28 @@ router.get('/', function (req, res, next) {
   }
 });
 
+router.get('/available', function (req, res, next) {
+  const {user, password, table} = req.query || {};
+  res.set('Access-Control-Allow-Origin', '*');
+  try {
+    const db = pgp({
+      host: HOST,
+      database: DB,
+      user,
+      password
+    });
+    db.any(`SELECT DISTINCT n,l,size_pop_type,run_id, init FROM $1:name ORDER BY l,n`,
+      [table])
+      .then(function (data) {
+        res.send(data);
+      })
+      .catch(function (error) {
+        res.send(error);
+        console.error("ERROR:", error);
+      });
+  } catch (e) {
+    res.send(e);
+  }
+});
+
 module.exports = router;
