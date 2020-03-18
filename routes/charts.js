@@ -30,7 +30,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/available', function (req, res, next) {
-  const {user, password, table} = req.query || {};
+  const {user, password, table, variant} = req.query || {};
   res.set('Access-Control-Allow-Origin', '*');
   try {
     const db = pgp({
@@ -39,7 +39,7 @@ router.get('/available', function (req, res, next) {
       user,
       password
     });
-    db.any(`SELECT DISTINCT n,l,size_pop_type,run_id, init FROM $1:name ORDER BY l,n`,
+    db.any(`SELECT DISTINCT n,${variant == 1 ? 'l' : 'size_pop_type'},run_id, sel_type, init FROM $1:name ORDER BY l,n`,
       [table])
       .then(function (data) {
         res.send(data);
