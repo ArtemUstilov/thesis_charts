@@ -39,7 +39,7 @@ router.get('/available', function (req, res, next) {
       user,
       password
     });
-    db.any(`SELECT DISTINCT n,${variant == 1 ? 'l' : 'size_pop_type'},run_id, sel_type, init FROM $1:name ORDER BY l,n`,
+    db.any(`SELECT DISTINCT l,${variant == 1 ? 'n' : 'size_pop_type'},run_id, sel_type, init FROM $1:name ORDER BY l`,
       [table])
       .then(function (data) {
         res.send(data);
