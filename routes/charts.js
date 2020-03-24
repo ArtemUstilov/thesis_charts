@@ -54,7 +54,7 @@ router.get('/available', function (req, res, next) {
 });
 
 router.get('/details', function (req, res, next) {
-  const {user, password, l, n, sel_type, table, run_id = 0, offset = 0, type, init='all_0' } = req.query || {};
+  const {user, password, l, n, sel_type, table, run_id = 0, type, init='all_0' } = req.query || {};
   res.set('Access-Control-Allow-Origin', '*');
   try {
     const db = pgp({
@@ -63,8 +63,8 @@ router.get('/details', function (req, res, next) {
       user,
       password
     });
-    db.any(`SELECT * FROM $1:name WHERE ${n ? 'n = $2' : 'size_pop_type = $2'} AND l = $3  AND init = $8 AND sel_type = $4 AND run_id = $5 ORDER BY iteration ASC`,
-      [table, n || type, l, sel_type, run_id, limit, offset, init])
+    db.any(`SELECT mode_pair, mode_ideal, mode_wild FROM $1:name WHERE ${n ? 'n = $2' : 'size_pop_type = $2'} AND l = $3  AND init = $6 AND sel_type = $4 AND run_id = $5 ORDER BY iteration ASC`,
+      [table, n || type, l, sel_type, run_id, init])
       .then(function (data) {
         res.send(data);
       })
