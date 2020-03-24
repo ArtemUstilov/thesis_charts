@@ -63,10 +63,7 @@ router.get('/details', function (req, res, next) {
       user,
       password
     });
-    db.any(`SELECT 
-    'mode_pair',
-    'mode_ideal',
-    'mode_wild' FROM $1:name WHERE ${n ? 'n = $2' : 'size_pop_type = $2'} AND l = $3  AND init = $8 AND sel_type = $4 AND run_id = $5 ORDER BY iteration ASC`,
+    db.any(`SELECT * FROM $1:name WHERE ${n ? 'n = $2' : 'size_pop_type = $2'} AND l = $3  AND init = $8 AND sel_type = $4 AND run_id = $5 ORDER BY iteration ASC`,
       [table, n || type, l, sel_type, run_id, limit, offset, init])
       .then(function (data) {
         res.send(data);
