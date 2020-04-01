@@ -77,4 +77,29 @@ router.get('/details', function (req, res, next) {
   }
 });
 
+router.get('/run_details', function (req, res, next) {
+  const {l, n, sel_type, table, run_id = 0, type, init='all_0', estim } = req.query || {};
+  const name = `${type}__l-${l}__runid-${run_id}__estim-${estim}__init-${init}__select-${sel_type}.png`;
+  res.set('Access-Control-Allow-Origin', '*');
+  console.log(name)
+  try {
+    const db = pgp({
+      host: HOST,
+      database: DB,
+      user: 'postgres',
+      password: '123123Aa'
+    });
+    db.any(`SELECT * FROM charts WHERE chart_name=$1`, [name])
+      .then(function (data) {
+        res.send(data);
+      })
+      .catch(function (error) {
+        res.send(error);
+        console.error("ERROR:", error);
+      });
+  } catch (e) {
+    res.send(e);
+  }
+});
+
 module.exports = router;
