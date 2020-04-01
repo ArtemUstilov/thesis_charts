@@ -79,7 +79,7 @@ router.get('/details', function (req, res, next) {
 
 router.get('/run_details', function (req, res, next) {
   const {l, n, sel_type, table, run_id = 0, type, init='all_0', estim } = req.query || {};
-  const name = `${type}__l-${l}__runid-${run_id}__estim-${estim}__init-${init}__select-${sel_type}.png`;
+  const name = `${type}__l-${l}__estim-${estim}__init-${init}__select-${sel_type}__v-1__runid-${run_id}.png`;
   res.set('Access-Control-Allow-Origin', '*');
   console.log(name)
   try {
